@@ -44,7 +44,7 @@ export async function describeImage(img) {
                     fileUri: uploadResult.file.uri
                 }
             },
-            { text: "Describe the image with a general description, if the image contains face of someone popular do not mention its name, just describe what they look like to the person the look alike, and last if the image contains something controversial completly ignore or make a pun out of it to avoid controversies." },
+            { text: "Deskripsikan gambar dengan penjelasan umum. Jika gambar tersebut mengandung soal, identifikasi jenis soal tersebut dan berikan jawaban yang tepat sesuai konteks, seperti matematika, fisika, atau pelajaran lainnya. Jika gambar mengandung soal yang kontroversial, abaikan sepenuhnya atau buat lelucon ringan untuk menghindari kontroversi." },
         ])
 
         // delete image from cloud
@@ -70,7 +70,7 @@ export async function getRoast(img = '') {
         console.log('Processing image:', img); // Log informasi gambar
         const imageDesc = await describeImage(img);
         console.log('Image description:', imageDesc); // Log deskripsi gambar
-        const prompt = `Analisis gambar berikut dan ekstrak soal dari teks yang ada. Berikan jawaban terbaik berdasarkan konteks pelajaran, seperti matematika, fisika, atau mata pelajaran lainnya. Jawabannya jangan lebih dari 500 kata, dan jika memungkinkan, sertakan langkah-langkah penyelesaian.
+        const prompt = `Analisis gambar berikut dan ekstrak soal dari teks yang ada. Berikan jawaban terbaik berdasarkan konteks pelajaran, seperti matematika, fisika, atau mata pelajaran lainnya. Wajib pake bahasa indonesia dalam menyampaikan nya, Jawabannya jangan lebih dari 500 kata, dan jika memungkinkan, sertakan langkah-langkah penyelesaian.
         
         ${imageDesc}
     `
