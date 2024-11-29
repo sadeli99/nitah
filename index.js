@@ -109,7 +109,7 @@ async function sendPhoto(chatId, photoUrl) {
 
 // Fungsi untuk menghasilkan nama file acak
 function generateRandomFilename() {
-  return 'id_' + Math.random().toString(36).substring(2, 9) + '.jpeg';
+  return 'id_' + Math.random().toString(36).substring(2, 9) + '.jpg';
 }
 
 // Fungsi untuk mengatur webhook Telegram
