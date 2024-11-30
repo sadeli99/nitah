@@ -18,11 +18,13 @@ app.post(`/webhook/${token}`, async (req, res) => {
     // Jika pesan teks adalah "/start"
     if (update.message.text === '/start') {
       await sendMessage(chatId, '👋 Hallo pelajar, Selamat datang di bot Nitah! Silahkan kirim foto soal pelajaran sekolah kamu');
+      return res.sendStatus(200); // Stop respon setelah mengirim pesan
     }
 
     // Jika pesan teks adalah "/informasi"
     if (update.message.text === '/informasi') {
       await sendMessage(chatId, 'Bot Nitah ini dirancang untuk membantu memproses gambar soal pelajaran sekolah-kamu dan mencari jawaban dengan cepat. Cukup kirimkan gambar soalmu, dan Nitah akan memperoses untuk memberikan jawaban yang cepat dan tepat!');
+      return res.sendStatus(200); // Stop respon setelah mengirim pesan
     }
 
     // Jika pesan teks adalah "/tentang"
@@ -30,6 +32,7 @@ app.post(`/webhook/${token}`, async (req, res) => {
       await sendMessage(chatId, 'Bot Nitah ini dibuat oleh zakia dengan tujuan untuk membantu pelajar dalam menyelesaikan soal pelajaran secara cepat dan tepat. Cukup kirimkan foto soal, dan bot nitah akan mencari jawaban untuk kamu.\n\n' +
         'Untuk informasi lebih lanjut, kunjungi situs kami: 🌐 https://nitah.web.id\n' +
         'Dukung kami melalui: ✨ https://saweria.co/zakiakaidzan');
+      return res.sendStatus(200); // Stop respon setelah mengirim pesan
     }
 
     // Jika ada pesan dengan gambar
@@ -62,23 +65,27 @@ app.post(`/webhook/${token}`, async (req, res) => {
         if (apiResult.error === "Request timed out. Please try again later.") {
           await sendMessage(chatId, 'Terjadi kesalahan pada server, tidak dapat menghubungi asisten untuk memproses gambar. Silahkan kirim foto soal yang lain.');
           await sendPhoto(chatId, 'https://img-9gag-fun.9cache.com/photo/ayNeMQb_460swp.webp'); // Ganti dengan URL gambar default jika diperlukan
+          return res.sendStatus(200); // Stop respon setelah mengirim pesan dan foto
         } else {
           // Kirim pesan untuk memberitahukan bahwa gambar sedang diproses
           if (apiResult.ok) {
             await sendMessage(chatId, '✨ Nitah udah beri jawabannya nih.');
             await sendMessage(chatId, apiResult.text || 'Gambar berhasil diproses!');
+            return res.sendStatus(200); // Stop respon setelah mengirim hasil
           } else {
             await sendMessage(chatId, 'Terjadi kesalahan saat memproses gambar.');
+            return res.sendStatus(200); // Stop respon setelah mengirim pesan kesalahan
           }
         }
       } catch (error) {
         console.error('Error:', error);
         await sendMessage(chatId, 'Gagal memproses gambar.');
+        return res.sendStatus(200); // Stop respon setelah menangani error
       }
     }
   }
 
-  res.sendStatus(200);
+  res.sendStatus(200); // Pastikan API berhenti merespon jika tidak ada kondisi yang sesuai
 });
 
 // Fungsi untuk mendapatkan URL file gambar dari Telegram
