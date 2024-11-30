@@ -67,9 +67,9 @@ app.post(`/webhook/${token}`, async (req, res) => {
             );
             await sendPhoto(chatId, 'https://img-9gag-fun.9cache.com/photo/ayNeMQb_460swp.webp');
           } else {
-            return res.sendStatus(200);
+            
           }
-          return res.sendStatus(200); // Stop respon di sini jika ada error
+          // Stop respon di sini jika ada error
         }
       } catch (error) {
         console.error('Error:', error);
