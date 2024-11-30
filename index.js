@@ -39,7 +39,6 @@ app.post(`/webhook/${token}`, async (req, res) => {
         const fileId = update.message.photo[update.message.photo.length - 1].file_id;
         const fileUrl = await getTelegramFileUrl(fileId);
 
-         
         // Ambil gambar dari Telegram
         const buffer = await fetch(fileUrl).then(res => res.buffer());
         const randomFilename = generateRandomFilename();
@@ -57,13 +56,13 @@ app.post(`/webhook/${token}`, async (req, res) => {
           headers: form.getHeaders(),
         });
 
-        if (apiResponse.status === 504) {
-          // Menangani kesalahan 504 Gateway Timeout
+        const apiResult = await apiResponse.json();
+
+        // Periksa jika apiResult mengandung error timeout
+        if (apiResult.error === "Request timed out. Please try again later.") {
           await sendMessage(chatId, 'Terjadi kesalahan pada server, tidak dapat menghubungi asisten untuk memproses gambar. Silahkan kirim foto soal yang lain.');
           await sendPhoto(chatId, 'https://img-9gag-fun.9cache.com/photo/ayNeMQb_460swp.webp'); // Ganti dengan URL gambar default jika diperlukan
         } else {
-          const apiResult = await apiResponse.json();
-          
           // Kirim pesan untuk memberitahukan bahwa gambar sedang diproses
           if (apiResult.ok) {
             await sendMessage(chatId, '✨ Nitah udah beri jawabannya nih.');
